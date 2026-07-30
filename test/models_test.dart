@@ -3,9 +3,11 @@ import 'package:newpos_9830/newpos_9830.dart';
 
 void main() {
   test('PrinterStatus.fromCode mapea los códigos del SDK', () {
+    // Los códigos de falla del SDK son negativos.
     expect(PrinterStatus.fromCode(0), PrinterStatus.ok);
-    expect(PrinterStatus.fromCode(3), PrinterStatus.paperLack);
-    expect(PrinterStatus.fromCode(2), PrinterStatus.highTemp);
+    expect(PrinterStatus.fromCode(-3), PrinterStatus.paperLack);
+    expect(PrinterStatus.fromCode(-2), PrinterStatus.highTemp);
+    expect(PrinterStatus.fromCode(-9), PrinterStatus.tasksFull);
     expect(PrinterStatus.fromCode(99), PrinterStatus.unknown);
   });
 

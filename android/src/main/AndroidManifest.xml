@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application>
+        <!-- SDK de plataforma Newpos, provisto por el firmware del terminal.
+             required=false para no bloquear la instalación en devices sin él;
+             los llamados al SDK fallan de forma controlada si no está presente. -->
+        <uses-library
+            android:name="com.pos.device"
+            android:required="false" />
+    </application>
+</manifest>

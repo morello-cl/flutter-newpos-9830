@@ -41,16 +41,16 @@ class NewposPrinter(private val context: Context) {
         }
         val printer = Printer.getInstance()
         for (attempt in 0..MAX_RETRIES) {
+            val task = PrintTask().apply {
+                setGray(gray)
+                setPrintBitmap(bitmap)
+                addFeedPaper(feed)
+            }
             try {
                 val latch = CountDownLatch(1)
                 val ok = AtomicBoolean(false)
 
                 printer.reset()
-                val task = PrintTask().apply {
-                    setGray(gray)
-                    setPrintBitmap(bitmap)
-                    addFeedPaper(feed)
-                }
                 printer.startPrint(task, PrinterCallback { code, _ ->
                     ok.set(code == Printer.PRINTER_OK)
                     if (code != Printer.PRINTER_OK) Log.e(TAG, "startPrint code=$code (intento $attempt)")
@@ -59,9 +59,16 @@ class NewposPrinter(private val context: Context) {
 
                 val finished = latch.await(PRINT_TIMEOUT_MS, TimeUnit.MILLISECONDS)
                 if (finished && ok.get()) return true
-                if (!finished) Log.w(TAG, "Impresión timeout (intento $attempt)")
+                if (!finished) {
+                    // Impresión colgada: abortarla antes de reintentar. Si no, el
+                    // siguiente reset()/startPrint podría imprimir dos veces, y el
+                    // llamador recyclaría el bitmap mientras el SDK aún lo lee.
+                    Log.w(TAG, "Impresión timeout (intento $attempt); cancelando")
+                    runCatching { printer.cancelPrint(task) }
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "Excepción imprimiendo (intento $attempt)", e)
+                runCatching { printer.cancelPrint(task) }
             }
             if (attempt < MAX_RETRIES) Thread.sleep(500)
         }

@@ -39,8 +39,9 @@ dependencies:
 
 ### SDK del fabricante (requerido para compilar)
 
-El SDK de plataforma (`sdk.jar`, propiedad de Newpos) **no se incluye** en este
-repositorio. Colócalo antes de compilar:
+El SDK de plataforma (`sdk.jar`, propiedad del fabricante) **no se incluye** en
+este repositorio. Aporta los paquetes `com.pos.device.*` (periféricos) y
+`com.secure.api.*` (seguridad). Colócalo antes de compilar:
 
 ```
 android/libs/sdk.jar
@@ -50,6 +51,13 @@ Ver [`android/libs/README.md`](android/libs/README.md). Se enlaza como
 `compileOnly`: el firmware del terminal provee las clases en tiempo de ejecución
 vía `<uses-library android:name="com.pos.device" />`, así que **no se empaqueta
 ningún binario propietario en la app**.
+
+> ⚖️ **Licencia y autorización.** El `sdk.jar` es software propietario del
+> fabricante, **no** cubierto por la licencia de este proyecto. Obtenerlo y
+> usarlo **requiere licencia y autorización vigentes del fabricante**; es
+> responsabilidad exclusiva de quien compila o distribuye la app contar con esos
+> derechos. Este plugin es solo un envoltorio y **no asume responsabilidad
+> alguna** por la obtención, el licenciamiento o el uso del SDK.
 
 ---
 
@@ -119,5 +127,11 @@ y cumplir PCI‑DSS.
 
 ## Licencia
 
-[MIT](LICENSE). El SDK `com.pos.device.*` es propiedad de Newpos y **no** está
-cubierto por esta licencia.
+El código de este plugin se publica bajo [MIT](LICENSE).
+
+El SDK del fabricante (`sdk.jar`; paquetes `com.pos.device.*` y `com.secure.api.*`)
+es software propietario de terceros, **no** cubierto por esta licencia y **no**
+distribuido en este repositorio. Su obtención y uso requieren licencia y
+autorización del fabricante; ver [`android/libs/README.md`](android/libs/README.md).
+Los autores de este envoltorio no otorgan derechos sobre dicho SDK y **declinan
+toda responsabilidad** derivada de su obtención, licenciamiento o uso.

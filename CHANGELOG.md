@@ -13,7 +13,12 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
 
 ## [No liberado]
 
-_(cambios en curso hacia la próxima versión)_
+### Agregado
+
+- **i18n — textos de estado legibles.** `PrinterStatus.describe(Locale)` entrega
+  el estado en español, inglés, chino tradicional y portugués (cae a inglés si
+  el idioma no está). El `enum` sigue siendo la fuente de verdad; es una
+  cortesía para apps sin l10n propio.
 
 ## [0.0.2]
 

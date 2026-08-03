@@ -1,7 +1,30 @@
+import 'dart:ui' show Locale;
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:newpos_9830/newpos_9830.dart';
 
 void main() {
+  test('PrinterStatus.describe cubre los 4 idiomas para todo estado', () {
+    for (final status in PrinterStatus.values) {
+      for (final lang in ['es', 'en', 'pt']) {
+        expect(status.describe(Locale(lang)), isNotEmpty,
+            reason: '$status sin texto en $lang');
+      }
+      expect(status.describe(const Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')),
+          isNotEmpty,
+          reason: '$status sin texto en zh-Hant');
+    }
+  });
+
+  test('PrinterStatus.describe traduce y cae a inglés', () {
+    expect(PrinterStatus.paperLack.describe(const Locale('es')), 'Sin papel');
+    expect(PrinterStatus.paperLack.describe(const Locale('en')), 'Out of paper');
+    expect(PrinterStatus.paperLack.describe(const Locale('pt')), 'Sem papel');
+    expect(PrinterStatus.paperLack.describe(const Locale('zh')), '缺紙');
+    // Idioma no provisto (francés) → inglés.
+    expect(PrinterStatus.paperLack.describe(const Locale('fr')), 'Out of paper');
+  });
+
   test('PrinterStatus.fromCode mapea los códigos del SDK', () {
     // Los códigos de falla del SDK son negativos.
     expect(PrinterStatus.fromCode(0), PrinterStatus.ok);

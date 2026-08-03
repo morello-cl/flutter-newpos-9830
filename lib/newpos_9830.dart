@@ -13,6 +13,7 @@ import 'src/newpos_printer.dart';
 import 'src/newpos_scanner.dart';
 
 export 'src/models.dart';
+export 'src/newpos_l10n.dart';
 export 'src/newpos_device.dart';
 export 'src/newpos_icc.dart';
 export 'src/newpos_magcard.dart';

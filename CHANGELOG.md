@@ -22,6 +22,8 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
 - **i18n — idioma del terminal.** `Newpos.device.setLocale(tag)` cambia el idioma
   del sistema del terminal y `Newpos.device.supportedLocales()` lista los que el
   firmware declara. Constantes `NewposDevice.locale*` para los 4 idiomas de DTEx.
+- **example — selector de idioma.** El demo agrega botones de idioma que llaman
+  `setLocale` y muestra el estado del printer traducido con `describe(locale)`.
 
 ## [0.0.2]
 

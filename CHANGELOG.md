@@ -19,6 +19,9 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
   el estado en español, inglés, chino tradicional y portugués (cae a inglés si
   el idioma no está). El `enum` sigue siendo la fuente de verdad; es una
   cortesía para apps sin l10n propio.
+- **i18n — idioma del terminal.** `Newpos.device.setLocale(tag)` cambia el idioma
+  del sistema del terminal y `Newpos.device.supportedLocales()` lista los que el
+  firmware declara. Constantes `NewposDevice.locale*` para los 4 idiomas de DTEx.
 
 ## [0.0.2]
 

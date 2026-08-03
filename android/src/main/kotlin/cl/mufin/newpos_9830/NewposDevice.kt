@@ -50,4 +50,25 @@ class NewposDevice(private val context: Context) {
         if (!NewposSdk.ensureReady(context)) return false
         return runCatching { DevConfig.getModuleByName(name) != null }.getOrDefault(false)
     }
+
+    /** Idiomas que el firmware declara soportar (tags BCP-47, ej. "en-US", "zh-TW"). */
+    fun supportedLocales(): List<String> {
+        if (!NewposSdk.ensureReady(context)) return emptyList()
+        return try {
+            SystemManager.getAllLocales() ?: emptyList()
+        } catch (e: Exception) {
+            Log.e(TAG, "supportedLocales() falló", e)
+            emptyList()
+        }
+    }
+
+    /**
+     * Cambia el idioma del sistema del terminal. [tag] es un tag de idioma tipo
+     * "en-US" / "zh-TW" (los que devuelve [supportedLocales]).
+     * @return true si el terminal aplicó el cambio (false si no soporta el tag).
+     */
+    fun setLocale(tag: String): Boolean {
+        if (!NewposSdk.ensureReady(context)) return false
+        return runCatching { SystemManager.setDefaultLocale(tag) }.getOrDefault(false)
+    }
 }

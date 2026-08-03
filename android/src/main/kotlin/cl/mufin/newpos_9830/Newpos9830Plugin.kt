@@ -64,6 +64,8 @@ class Newpos9830Plugin :
         "device.info" -> device.info()
         "device.modules" -> device.modules()
         "device.hasModule" -> device.hasModule(call.argument("name")!!)
+        "device.supportedLocales" -> device.supportedLocales()
+        "device.setLocale" -> device.setLocale(call.argument("tag")!!)
 
         "printer.printImage" -> {
             val bytes = call.argument<ByteArray>("png")!!

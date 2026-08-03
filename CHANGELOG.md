@@ -24,6 +24,9 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
   firmware declara. Constantes `NewposDevice.locale*` para los 4 idiomas de DTEx.
 - **example — selector de idioma.** El demo agrega botones de idioma que llaman
   `setLocale` y muestra el estado del printer traducido con `describe(locale)`.
+- **docs — README bilingüe.** `README.md` en inglés (primario, convención de
+  pub.dev) + `README.es.md` en español, con selector de idioma cruzado. Ambos
+  documentan la API i18n.
 
 ## [0.0.2]
 

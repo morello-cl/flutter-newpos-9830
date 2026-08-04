@@ -14,11 +14,15 @@ class NewposDevice {
   static const String moduleSam = 'SAM_SLOT';
 
   /// Tags de idioma (BCP-47) de los idiomas que maneja DTEx, para [setLocale].
-  /// Verifica contra [supportedLocales] lo que el firmware realmente trae.
+  ///
+  /// Verificados contra el firmware del NEW9830 (`getAllLocales`). El equipo
+  /// también trae variantes regionales por si se prefieren: `es-US`, `en-GB`,
+  /// `zh-HK` (también tradicional), `pt-PT`. La fuente de verdad en runtime
+  /// sigue siendo [supportedLocales].
   static const String localeSpanish = 'es-ES';
   static const String localeEnglish = 'en-US';
-  static const String localeChineseTraditional = 'zh-TW';
-  static const String localePortuguese = 'pt-BR';
+  static const String localeChineseTraditional = 'zh-TW'; // tradicional (Taiwán)
+  static const String localePortuguese = 'pt-BR'; // Brasil
 
   /// Ficha del equipo (serie, modelo, versiones, IMEI).
   Future<DeviceInfo> info() async {

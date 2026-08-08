@@ -15,9 +15,12 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
 
 ### Cambiado
 
-- **build — jar provisto por la app consumidora.** El gradle busca el `sdk.jar`
-  también en `<app>/android/newpos-sdk/`, para consumir el plugin por git/pub sin
-  el jar en el paquete. Disclaimer legal reforzado (uso sujeto a contratos y
+- **build — distribución del jar por GitHub Packages.** El gradle resuelve el
+  `sdk.jar` en orden: jar local (`libs/` o `<app>/android/newpos-sdk/`) y, si no
+  hay, lo descarga de un registro Maven **privado** (`cl.mufin:newpos-sdk` en
+  GitHub Packages) usando un token — sin copiar el jar a mano en cada máquina.
+  Configurable con `newposSdkRepo` / `newposSdkVersion`. No rompe el build sin
+  token (usa el jar local). Disclaimer legal reforzado (uso sujeto a contratos y
   autorización del fabricante; prohibido sin permisos).
 
 ### Agregado

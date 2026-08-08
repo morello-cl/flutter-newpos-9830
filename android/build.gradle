@@ -51,7 +51,13 @@ android {
         // SDK de firmware Newpos (com.pos.device.*). El terminal lo provee en runtime
         // vía <uses-library com.pos.device>; solo se necesita al compilar.
         // El jar NO se versiona (ver android/libs/README.md).
+        //
+        // Dos orígenes posibles (el primero que tenga el jar gana):
+        //  1) libs/ del plugin — al consumir por `path:` (dev local).
+        //  2) <app>/android/newpos-sdk/ — al consumir por git/pub: cada app
+        //     coloca su propio sdk.jar ahí (el plugin publicado NO lo trae).
         compileOnly fileTree(dir: "libs", include: ["*.jar"])
+        compileOnly fileTree(dir: "${rootProject.projectDir}/newpos-sdk", include: ["*.jar"])
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.0.0")
     }

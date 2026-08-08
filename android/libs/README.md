@@ -19,25 +19,41 @@ que **no se empaqueta ningún binario propietario** en la aplicación.
 
 ## Para compilar
 
-Coloca el archivo provisto por el fabricante aquí:
+El plugin busca el `sdk.jar` en dos ubicaciones (gana la primera que lo tenga):
 
-```
-android/libs/sdk.jar
-```
+1. **Consumiendo por `path:` (desarrollo local)** — dentro de este repo:
+   ```
+   android/libs/sdk.jar
+   ```
+2. **Consumiendo por git o pub.dev** — el paquete publicado **no** trae el jar;
+   cada app consumidora coloca el suyo en:
+   ```
+   <tu_app>/android/newpos-sdk/sdk.jar
+   ```
 
-Sin este archivo el plugin no compila.
+Sin el archivo en alguna de las dos, el plugin no compila.
 
-## Aviso legal y de responsabilidad
+## ⚠️ Aviso legal y de responsabilidad
+
+**Lea esto antes de incorporar el SDK.**
 
 - El `sdk.jar` y los paquetes `com.pos.device.*` y `com.secure.api.*` son
-  **propiedad de Newpos / el fabricante del terminal**. **No** están cubiertos
-  por la licencia MIT de este repositorio ni se distribuyen con él.
-- **Obtenerlo y usarlo requiere licencia y autorización vigentes del
-  fabricante.** Es responsabilidad exclusiva de quien compila o distribuye una
-  aplicación basada en este plugin **contar con esos derechos** antes de
-  incorporar el SDK, y cumplir los términos, restricciones de redistribución y
-  la normativa aplicable (incluida la certificación PCI cuando corresponda).
-- Este proyecto es únicamente un **envoltorio** de código abierto: no concede
-  ningún derecho sobre el SDK del fabricante, no lo redistribuye y **no asume
-  responsabilidad alguna** por su obtención, licenciamiento o uso. El software
-  se entrega «TAL CUAL», sin garantías de ningún tipo (ver [`LICENSE`](../../LICENSE)).
+  **software propietario del fabricante del terminal (Newpos / asmart) y de sus
+  licenciantes**. **No** están cubiertos por la licencia MIT de este repositorio,
+  **no** se distribuyen con él y **no** pueden redistribuirse sin autorización
+  expresa del titular.
+- **Su obtención y uso están sujetos a los contratos, licencias y autorizaciones
+  vigentes entre el usuario y el fabricante.** Utilizar el SDK **sin contar con
+  esos permisos está prohibido** y puede infringir derechos de propiedad
+  intelectual, obligaciones contractuales y la normativa aplicable (incluida la
+  certificación PCI cuando corresponda). Es **responsabilidad única y exclusiva
+  del usuario** verificar y disponer de dichos derechos antes de compilar,
+  distribuir o desplegar cualquier aplicación basada en este plugin.
+- Este proyecto es únicamente un **envoltorio de código abierto**. Sus autores
+  **no** son el fabricante del SDK, **no** tienen relación con él, **no** conceden
+  ningún derecho, licencia ni autorización sobre el SDK, **no** lo redistribuyen y
+  **declinan toda responsabilidad** —directa o indirecta— derivada de su
+  obtención, licenciamiento, uso o mal uso. El software se entrega «TAL CUAL»,
+  sin garantías de ningún tipo (ver [`LICENSE`](../../LICENSE)).
+- Al incorporar el SDK, el usuario **asume íntegramente** dicha responsabilidad y
+  mantiene indemnes a los autores de este envoltorio frente a cualquier reclamo.

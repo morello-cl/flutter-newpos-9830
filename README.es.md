@@ -49,17 +49,23 @@ este repositorio. Aporta los paquetes `com.pos.device.*` (periféricos) y
 android/libs/sdk.jar
 ```
 
-Ver [`android/libs/README.md`](android/libs/README.md). Se enlaza como
-`compileOnly`: el firmware del terminal provee las clases en tiempo de ejecución
-vía `<uses-library android:name="com.pos.device" />`, así que **no se empaqueta
-ningún binario propietario en la app**.
+Al consumir el plugin por **git o pub.dev** (el paquete publicado no trae el jar),
+cada app coloca su propia copia en `<tu_app>/android/newpos-sdk/sdk.jar`. Ver
+[`android/libs/README.md`](android/libs/README.md). Se enlaza como `compileOnly`:
+el firmware del terminal provee las clases en tiempo de ejecución vía
+`<uses-library android:name="com.pos.device" />`, así que **no se empaqueta ningún
+binario propietario en la app**.
 
-> ⚖️ **Licencia y autorización.** El `sdk.jar` es software propietario del
-> fabricante, **no** cubierto por la licencia de este proyecto. Obtenerlo y
-> usarlo **requiere licencia y autorización vigentes del fabricante**; es
-> responsabilidad exclusiva de quien compila o distribuye la app contar con esos
-> derechos. Este plugin es solo un envoltorio y **no asume responsabilidad
-> alguna** por la obtención, el licenciamiento o el uso del SDK.
+> ⚖️ **Licencia y autorización — léelo antes de usar.** El `sdk.jar`
+> (`com.pos.device.*`, `com.secure.api.*`) es software propietario del fabricante,
+> **no** cubierto por la licencia de este proyecto y **no** redistribuible sin
+> autorización expresa del titular. Su obtención y uso están **sujetos a los
+> contratos, licencias y autorizaciones vigentes entre el usuario y el
+> fabricante**; usarlo **sin esos permisos está prohibido** y puede infringir
+> derechos de terceros. Este plugin es solo un envoltorio: sus autores **no** son
+> el fabricante del SDK, **no** conceden derecho alguno sobre él y **declinan toda
+> responsabilidad** por su obtención, licenciamiento, uso o mal uso. La
+> responsabilidad recae **únicamente en el usuario**.
 
 ---
 

@@ -48,17 +48,22 @@ this repository. It provides the `com.pos.device.*` (peripherals) and
 android/libs/sdk.jar
 ```
 
-See [`android/libs/README.md`](android/libs/README.md). It is linked as
+When consuming the plugin via **git or pub.dev** (the published package does not
+carry the jar), each app places its own copy at `<app>/android/newpos-sdk/sdk.jar`
+instead. See [`android/libs/README.md`](android/libs/README.md). It is linked as
 `compileOnly`: the terminal firmware provides the classes at runtime via
 `<uses-library android:name="com.pos.device" />`, so **no proprietary binary is
 bundled into the app**.
 
-> ⚖️ **License and authorization.** `sdk.jar` is the manufacturer's proprietary
-> software, **not** covered by this project's license. Obtaining and using it
-> **requires a valid license and authorization from the manufacturer**; it is the
-> sole responsibility of whoever builds or ships the app to hold those rights.
-> This plugin is only a wrapper and **assumes no liability** for the acquisition,
-> licensing or use of the SDK.
+> ⚖️ **License and authorization — read before use.** `sdk.jar` (`com.pos.device.*`,
+> `com.secure.api.*`) is the manufacturer's proprietary software, **not** covered
+> by this project's license and **not** redistributable without the owner's
+> express authorization. Its acquisition and use are **governed by the contracts,
+> licenses and authorizations between the user and the manufacturer**; using it
+> **without those permissions is prohibited** and may infringe third-party rights.
+> This plugin is only a wrapper: its authors are **not** the SDK vendor, grant **no**
+> rights over it, and **disclaim all liability** for its acquisition, licensing,
+> use or misuse. Responsibility lies **solely with the user**.
 
 ---
 

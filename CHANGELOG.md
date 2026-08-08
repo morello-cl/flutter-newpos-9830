@@ -13,6 +13,13 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
 
 ## [No liberado]
 
+### Cambiado
+
+- **build — jar provisto por la app consumidora.** El gradle busca el `sdk.jar`
+  también en `<app>/android/newpos-sdk/`, para consumir el plugin por git/pub sin
+  el jar en el paquete. Disclaimer legal reforzado (uso sujeto a contratos y
+  autorización del fabricante; prohibido sin permisos).
+
 ### Agregado
 
 - **i18n — textos de estado legibles.** `PrinterStatus.describe(Locale)` entrega

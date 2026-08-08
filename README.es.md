@@ -37,7 +37,11 @@ dependencies:
   newpos_9830:
     git:
       url: https://github.com/morello-cl/flutter-newpos-9830.git
+      ref: v0.0.2   # fija un tag liberado para builds reproducibles en todos los equipos
 ```
+
+Cada app consumidora aporta su propio `sdk.jar` (ver más abajo) — el paquete no
+lo incluye.
 
 ### SDK del fabricante (requerido para compilar)
 

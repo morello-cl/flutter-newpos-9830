@@ -1,6 +1,6 @@
 🌐 **English** · [Español](README.es.md)
 
-# newpos_9830
+# flutter_newpos_android_sdk
 
 A **Flutter (Android)** plugin for the **Newpos 9830** payment terminal and other
 **asmart / Newpos** family devices whose firmware exposes the `com.pos.device.*`
@@ -33,9 +33,9 @@ Not published on pub.dev yet. Use it as a Git or path dependency:
 
 ```yaml
 dependencies:
-  newpos_9830:
+  flutter_newpos_android_sdk:
     git:
-      url: https://github.com/morello-cl/flutter-newpos-9830.git
+      url: https://github.com/morello-cl/flutter-newpos-android-sdk.git
       ref: v0.0.2   # pin a released tag for reproducible builds across machines
 ```
 
@@ -74,7 +74,7 @@ bundled into the app**.
 ## Usage
 
 ```dart
-import 'package:newpos_9830/newpos_9830.dart';
+import 'package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart';
 
 // Device info
 final info = await Newpos.device.info();

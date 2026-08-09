@@ -1,7 +1,7 @@
 import 'dart:ui' show Locale;
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:newpos_9830/newpos_9830.dart';
+import 'package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart';
 
 void main() {
   test('PrinterStatus.describe cubre los 4 idiomas para todo estado', () {

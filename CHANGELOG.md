@@ -15,6 +15,14 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
 
 ### Cambiado
 
+- **BREAKING — rename del paquete y el repo.** Paquete Dart `newpos_9830` →
+  `flutter_newpos_android_sdk`; repo `flutter-newpos-9830` →
+  `flutter-newpos-android-sdk` (para separar la línea Android de los terminales
+  Linux de Newpos). Los consumidores actualizan el import a
+  `package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart` y la clave
+  de dependencia. El package Kotlin (`cl.mufin.newpos_9830`), el channel y la API
+  (`Newpos.*`) **no** cambian.
+
 - **build — distribución del jar por GitHub Packages.** El gradle resuelve el
   `sdk.jar` en orden: jar local (`libs/` o `<app>/android/newpos-sdk/`) y, si no
   hay, lo descarga de un registro Maven **privado** (`cl.mufin:newpos-sdk` en
@@ -68,6 +76,6 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
   - Lectura de banda magnética, 3 tracks (`Newpos.magcard`).
   - Tarjeta de contacto / PSAM con selección de slot (`Newpos.icc`).
 
-[No liberado]: https://github.com/morello-cl/flutter-newpos-9830/compare/v0.0.2...HEAD
-[0.0.2]: https://github.com/morello-cl/flutter-newpos-9830/compare/v0.0.1...v0.0.2
-[0.0.1]: https://github.com/morello-cl/flutter-newpos-9830/releases/tag/v0.0.1
+[No liberado]: https://github.com/morello-cl/flutter-newpos-android-sdk/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/morello-cl/flutter-newpos-android-sdk/compare/v0.0.1...v0.0.2
+[0.0.1]: https://github.com/morello-cl/flutter-newpos-android-sdk/releases/tag/v0.0.1

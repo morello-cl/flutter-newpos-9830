@@ -1,6 +1,6 @@
 🌐 [English](README.md) · **Español**
 
-# newpos_9830
+# flutter_newpos_android_sdk
 
 Plugin **Flutter (Android)** para el terminal de pago **Newpos 9830** y otros
 equipos de la familia **asmart / Newpos** cuyo firmware expone el SDK de
@@ -34,9 +34,9 @@ Aún no está publicado en pub.dev. Se usa como dependencia de Git o por ruta:
 
 ```yaml
 dependencies:
-  newpos_9830:
+  flutter_newpos_android_sdk:
     git:
-      url: https://github.com/morello-cl/flutter-newpos-9830.git
+      url: https://github.com/morello-cl/flutter-newpos-android-sdk.git
       ref: v0.0.2   # fija un tag liberado para builds reproducibles en todos los equipos
 ```
 
@@ -76,7 +76,7 @@ binario propietario en la app**.
 ## Uso
 
 ```dart
-import 'package:newpos_9830/newpos_9830.dart';
+import 'package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart';
 
 // Datos del equipo
 final info = await Newpos.device.info();

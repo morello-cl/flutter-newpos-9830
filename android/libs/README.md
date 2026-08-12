@@ -33,55 +33,13 @@ El plugin busca el `sdk.jar` en dos ubicaciones (gana la primera que lo tenga):
 
 Sin el archivo en alguna de las dos, el plugin no compila.
 
-## Distribución automática (GitHub Packages) — recomendado
+## Cómo obtener el jar
 
-Para no copiar el jar a mano en cada máquina, se publica **una vez** en un
-registro Maven **privado** (GitHub Packages) y Gradle lo descarga solo en cada
-build. El `android/build.gradle` ya está configurado: usa el jar local si
-existe; si no, baja `cl.mufin:newpos-sdk` del repo privado (requiere token).
-
-> ⚠️ El repo que aloja el paquete **debe ser privado**. GitHub Packages hereda
-> la visibilidad del repo: publicarlo en uno público expondría el SDK.
-
-### Una vez por versión del SDK (quien tenga el jar)
-
-1. Crea un repo **privado** para el paquete, p. ej. `morello-cl/newpos-sdk`.
-2. Publica el jar como artefacto Maven (con un PAT con scope `write:packages`):
-
-   ```bash
-   mvn deploy:deploy-file \
-     -DgroupId=cl.mufin -DartifactId=newpos-sdk -Dversion=1.0.0 -Dpackaging=jar \
-     -Dfile=android/libs/sdk.jar \
-     -DrepositoryId=github \
-     -Durl=https://maven.pkg.github.com/morello-cl/newpos-sdk
-   ```
-
-   con `~/.m2/settings.xml`:
-
-   ```xml
-   <settings><servers><server>
-     <id>github</id>
-     <username>TU_USUARIO_GH</username>
-     <password>PAT_CON_write:packages</password>
-   </server></servers></settings>
-   ```
-
-   Al subir un SDK nuevo, sube `-Dversion` y el `newposSdkVersion` del consumidor.
-
-### Una vez por máquina / CI (cada desarrollador)
-
-Un PAT con scope `read:packages` en `~/.gradle/gradle.properties` (global, no por
-proyecto):
-
-```properties
-gpr.user=tu_usuario_github
-gpr.token=ghp_xxx_con_read_packages
-```
-
-(o variables de entorno `GITHUB_ACTOR` / `GITHUB_TOKEN`; en CI, como secrets.)
-
-A partir de ahí, `flutter build` descarga el jar automáticamente. Sin token,
-Gradle cae al jar local. Overridables: `newposSdkRepo`, `newposSdkVersion`.
+El `sdk.jar` lo **entrega Newpos (el fabricante del terminal)**. Debes
+**solicitarlo directamente a Newpos** en el marco de tu contrato o licencia del
+equipo. No se distribuye a través de este repositorio ni por ningún canal
+público. Una vez que lo tengas, colócalo en alguna de las ubicaciones de arriba
+y compila normalmente.
 
 ## ⚠️ Aviso legal y de responsabilidad
 

@@ -23,13 +23,11 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
   de dependencia. El package Kotlin (`cl.mufin.newpos_9830`), el channel y la API
   (`Newpos.*`) **no** cambian.
 
-- **build — distribución del jar por GitHub Packages.** El gradle resuelve el
-  `sdk.jar` en orden: jar local (`libs/` o `<app>/android/newpos-sdk/`) y, si no
-  hay, lo descarga de un registro Maven **privado** (`cl.mufin:newpos-sdk` en
-  GitHub Packages) usando un token — sin copiar el jar a mano en cada máquina.
-  Configurable con `newposSdkRepo` / `newposSdkVersion`. No rompe el build sin
-  token (usa el jar local). Disclaimer legal reforzado (uso sujeto a contratos y
-  autorización del fabricante; prohibido sin permisos).
+- **build — el jar se toma de una ubicación local.** El gradle resuelve el
+  `sdk.jar` desde `libs/` (dev por `path:`) o `<app>/android/newpos-sdk/` (consumo
+  por git). El jar lo **entrega Newpos** y se solicita al fabricante; no se
+  versiona ni se distribuye por este repositorio. Disclaimer legal reforzado (uso
+  sujeto a contratos y autorización del fabricante; prohibido sin permisos).
 
 ### Agregado
 

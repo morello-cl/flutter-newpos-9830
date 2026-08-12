@@ -45,7 +45,9 @@ ship it.
 ### Vendor SDK (required to build)
 
 The platform SDK (`sdk.jar`, owned by the manufacturer) is **not included** in
-this repository. It provides the `com.pos.device.*` (peripherals) and
+this repository. **You must request it directly from Newpos (the manufacturer)**
+under your terminal contract/license — it is not distributed here or through any
+public channel. It provides the `com.pos.device.*` (peripherals) and
 `com.secure.api.*` (security) packages. Place it before building:
 
 ```

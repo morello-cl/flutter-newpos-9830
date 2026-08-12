@@ -18,20 +18,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        // SDK propietario del terminal desde GitHub Packages (repo PRIVADO).
-        // Solo se agrega si hay token; quien no lo tenga usa el jar local.
-        def newposSdkToken = project.findProperty("gpr.token") ?: System.getenv("GITHUB_TOKEN")
-        if (newposSdkToken?.trim()) {
-            maven {
-                name = "NewposSdkGitHubPackages"
-                url = uri("https://maven.pkg.github.com/" +
-                        (project.findProperty("newposSdkRepo") ?: "morello-cl/newpos-sdk"))
-                credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR") ?: "token"
-                    password = newposSdkToken
-                }
-            }
-        }
     }
 }
 
@@ -64,17 +50,12 @@ android {
     dependencies {
         // SDK de firmware Newpos (com.pos.device.*), solo en tiempo de compilación
         // (el terminal lo provee en runtime vía <uses-library com.pos.device>).
-        // Se resuelve en este orden — el jar NUNCA se versiona ni se publica en
-        // el paquete (ver android/libs/README.md):
-        //  1) jar local: libs/ (dev por `path:`) o <app>/android/newpos-sdk/.
-        //  2) si no hay jar local: GitHub Packages (repo privado), requiere token.
-        def newposLocalJars = fileTree(dir: "libs", include: ["*.jar"]) +
-                fileTree(dir: "${rootProject.projectDir}/newpos-sdk", include: ["*.jar"])
-        if (!newposLocalJars.isEmpty()) {
-            compileOnly newposLocalJars
-        } else {
-            compileOnly "cl.mufin:newpos-sdk:${project.findProperty('newposSdkVersion') ?: '1.0.0'}"
-        }
+        // El jar lo entrega Newpos y NO se versiona ni se publica (ver
+        // android/libs/README.md). Se toma de dos ubicaciones locales:
+        //  1) libs/ del plugin — al consumir por `path:` (dev local).
+        //  2) <app>/android/newpos-sdk/ — al consumir por git: cada app pone el suyo.
+        compileOnly fileTree(dir: "libs", include: ["*.jar"])
+        compileOnly fileTree(dir: "${rootProject.projectDir}/newpos-sdk", include: ["*.jar"])
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.0.0")
     }

@@ -46,7 +46,9 @@ lo incluye.
 ### SDK del fabricante (requerido para compilar)
 
 El SDK de plataforma (`sdk.jar`, propiedad del fabricante) **no se incluye** en
-este repositorio. Aporta los paquetes `com.pos.device.*` (periféricos) y
+este repositorio. **Debes solicitarlo directamente a Newpos (el fabricante)** en
+el marco de tu contrato o licencia del terminal — no se distribuye aquí ni por
+ningún canal público. Aporta los paquetes `com.pos.device.*` (periféricos) y
 `com.secure.api.*` (seguridad). Colócalo antes de compilar:
 
 ```

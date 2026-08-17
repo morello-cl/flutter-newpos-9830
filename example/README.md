@@ -1,6 +1,6 @@
 # newpos_9830_example
 
-Demonstrates how to use the newpos_9830 plugin.
+Demonstrates how to use the flutter_newpos_android_sdk plugin.
 
 ## Getting Started
 

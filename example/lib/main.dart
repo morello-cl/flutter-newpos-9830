@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
-import 'package:newpos_9830/newpos_9830.dart';
+import 'package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart';
 
 void main() => runApp(const MyApp());
 
@@ -28,8 +28,23 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _log = 'Listo.';
+  ui.Locale _locale = const ui.Locale('es');
+
+  // Los 4 idiomas de DTEx: (etiqueta, tag para el terminal, Locale para describe()).
+  static const _langs = <(String, String, ui.Locale)>[
+    ('Español', NewposDevice.localeSpanish, ui.Locale('es')),
+    ('English', NewposDevice.localeEnglish, ui.Locale('en')),
+    ('中文(繁)', NewposDevice.localeChineseTraditional,
+        ui.Locale.fromSubtags(languageCode: 'zh', scriptCode: 'Hant')),
+    ('Português', NewposDevice.localePortuguese, ui.Locale('pt')),
+  ];
 
   void _show(Object? msg) => setState(() => _log = '$msg');
+
+  Future<void> _setLang(String label, String tag, ui.Locale locale) async {
+    setState(() => _locale = locale);
+    await _run('Idioma $label', () => Newpos.device.setLocale(tag));
+  }
 
   Future<void> _run(String label, Future<Object?> Function() action) async {
     _show('$label…');
@@ -49,6 +64,18 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Wrap(spacing: 8, children: [
+              for (final (label, tag, locale) in _langs)
+                FilledButton.tonal(
+                  onPressed: () => _setLang(label, tag, locale),
+                  child: Text(label),
+                ),
+              FilledButton.tonal(
+                onPressed: () => _run('Idiomas', () => Newpos.device.supportedLocales()),
+                child: const Text('Soportados'),
+              ),
+            ]),
+            const SizedBox(height: 8),
             Wrap(spacing: 8, runSpacing: 8, children: [
               FilledButton(
                 onPressed: () => _run('Info', () async => (await Newpos.device.info()).toString()),
@@ -70,7 +97,10 @@ class _HomePageState extends State<HomePage> {
                 child: const Text('Imprimir prueba'),
               ),
               FilledButton(
-                onPressed: () => _run('Estado printer', () => Newpos.printer.status()),
+                onPressed: () => _run('Estado printer', () async {
+                  final s = await Newpos.printer.status();
+                  return '${s.name} — ${s.describe(_locale)}';
+                }),
                 child: const Text('Estado printer'),
               ),
               FilledButton(

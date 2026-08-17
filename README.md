@@ -1,123 +1,166 @@
-# newpos_9830
+🌐 **English** · [Español](README.es.md)
 
-Plugin **Flutter (Android)** para el terminal de pago **Newpos 9830** y otros
-equipos de la familia **asmart / Newpos** cuyo firmware expone el SDK de
-plataforma `com.pos.device.*`.
+# flutter_newpos_android_sdk
 
-Da acceso desde Dart a los periféricos del terminal —impresora térmica, datos
-del equipo, scanner, lector de banda magnética y lector de chip / PSAM— con una
-API sencilla y sin depender de binarios propietarios empaquetados.
+A **Flutter (Android)** plugin for the **Newpos 9830** payment terminal and other
+**asmart / Newpos** family devices whose firmware exposes the `com.pos.device.*`
+platform SDK.
 
-> ⚠️ Solo funciona sobre hardware Newpos real. En un emulador o en cualquier
-> otro dispositivo las llamadas fallan de forma controlada (el SDK lo provee el
-> firmware del terminal).
+It gives Dart access to the terminal peripherals —thermal printer, device info,
+scanner, magnetic-stripe reader and chip / PSAM reader— through a simple API,
+without bundling any proprietary binaries.
 
----
-
-## ¿Qué hace?
-
-| Módulo | Qué resuelve | API |
-|--------|--------------|-----|
-| 🖨️ **Impresora** | Imprime un ticket ya rasterizado a imagen (PNG) y consulta el estado del cabezal | `Newpos.printer` |
-| 📇 **Equipo** | N° de serie, modelo, versiones de HW/FW, IMEI y qué módulos trae el equipo | `Newpos.device` |
-| 📷 **Scanner** | Lee un código de barras / QR (single-shot, con timeout) | `Newpos.scanner` |
-| 💳 **Banda magnética** | Lee los 3 tracks de la banda | `Newpos.magcard` |
-| 🔌 **Chip / PSAM** | Selecciona el slot (tarjeta de usuario, PSAM1‑4, NFC) e intercambia APDUs | `Newpos.icc` |
+> ⚠️ Works only on real Newpos hardware. On an emulator or any other device the
+> calls fail gracefully (the SDK is provided by the terminal firmware).
 
 ---
 
-## Instalación
+## What it does
 
-Aún no está publicado en pub.dev. Se usa como dependencia de Git o por ruta:
+| Module | What it solves | API |
+|--------|----------------|-----|
+| 🖨️ **Printer** | Prints an already-rasterized receipt image (PNG) and reads the print head status | `Newpos.printer` |
+| 📇 **Device** | Serial number, model, HW/FW versions, IMEI and which modules the unit ships | `Newpos.device` |
+| 📷 **Scanner** | Reads a barcode / QR (single-shot, with timeout) | `Newpos.scanner` |
+| 💳 **Magnetic stripe** | Reads the 3 stripe tracks | `Newpos.magcard` |
+| 🔌 **Chip / PSAM** | Selects the slot (user card, PSAM1‑4, NFC) and exchanges APDUs | `Newpos.icc` |
+
+---
+
+## Installation
+
+Not published on pub.dev yet. Use it as a Git or path dependency:
 
 ```yaml
 dependencies:
-  newpos_9830:
+  flutter_newpos_android_sdk:
     git:
-      url: https://github.com/morello-cl/flutter-newpos-9830.git
+      url: https://github.com/morello-cl/flutter-newpos-android-sdk.git
+      ref: v0.0.2   # pin a released tag for reproducible builds across machines
 ```
 
-### SDK del fabricante (requerido para compilar)
+Each consuming app supplies its own `sdk.jar` (see below) — the package does not
+ship it.
 
-El SDK de plataforma (`sdk.jar`, propiedad de Newpos) **no se incluye** en este
-repositorio. Colócalo antes de compilar:
+### Vendor SDK (required to build)
+
+The platform SDK (`sdk.jar`, owned by the manufacturer) is **not included** in
+this repository. **You must request it directly from Newpos (the manufacturer)**
+under your terminal contract/license — it is not distributed here or through any
+public channel. It provides the `com.pos.device.*` (peripherals) and
+`com.secure.api.*` (security) packages. Place it before building:
 
 ```
 android/libs/sdk.jar
 ```
 
-Ver [`android/libs/README.md`](android/libs/README.md). Se enlaza como
-`compileOnly`: el firmware del terminal provee las clases en tiempo de ejecución
-vía `<uses-library android:name="com.pos.device" />`, así que **no se empaqueta
-ningún binario propietario en la app**.
+When consuming the plugin via **git or pub.dev** (the published package does not
+carry the jar), each app places its own copy at `<app>/android/newpos-sdk/sdk.jar`
+instead. See [`android/libs/README.md`](android/libs/README.md). It is linked as
+`compileOnly`: the terminal firmware provides the classes at runtime via
+`<uses-library android:name="com.pos.device" />`, so **no proprietary binary is
+bundled into the app**.
+
+> ⚖️ **License and authorization — read before use.** `sdk.jar` (`com.pos.device.*`,
+> `com.secure.api.*`) is the manufacturer's proprietary software, **not** covered
+> by this project's license and **not** redistributable without the owner's
+> express authorization. Its acquisition and use are **governed by the contracts,
+> licenses and authorizations between the user and the manufacturer**; using it
+> **without those permissions is prohibited** and may infringe third-party rights.
+> This plugin is only a wrapper: its authors are **not** the SDK vendor, grant **no**
+> rights over it, and **disclaim all liability** for its acquisition, licensing,
+> use or misuse. Responsibility lies **solely with the user**.
 
 ---
 
-## Uso
+## Usage
 
 ```dart
-import 'package:newpos_9830/newpos_9830.dart';
+import 'package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart';
 
-// Datos del equipo
+// Device info
 final info = await Newpos.device.info();
-print('${info.brand} ${info.model} — serie ${info.serialNumber}');
+print('${info.brand} ${info.model} — s/n ${info.serialNumber}');
 
-// ¿Trae scanner?
-final tieneScanner = await Newpos.device.hasModule(NewposDevice.moduleScanner);
+// Has a scanner?
+final hasScanner = await Newpos.device.hasModule(NewposDevice.moduleScanner);
 
-// Imprimir un ticket (PNG; ancho recomendado 384px para papel de 58mm)
+// Print a receipt (PNG; recommended width 384px for 58mm paper)
 final ok = await Newpos.printer.printImage(pngBytes);
-final estado = await Newpos.printer.status(); // PrinterStatus.ok / paperLack / ...
+final status = await Newpos.printer.status(); // PrinterStatus.ok / paperLack / ...
 
-// Escanear un código
-final codigo = await Newpos.scanner.scan(timeout: Duration(seconds: 20));
+// Scan a code
+final code = await Newpos.scanner.scan(timeout: Duration(seconds: 20));
 
-// Leer banda magnética (3 tracks)
+// Read the magnetic stripe (3 tracks)
 final tracks = await Newpos.magcard.readTracks();
 
-// Enviar un APDU a un módulo PSAM
+// Send an APDU to a PSAM module
 await Newpos.icc.connect(IccSlot.psam1);
 final resp = await Newpos.icc.transmit(IccSlot.psam1, apduBytes);
 await Newpos.icc.disconnect(IccSlot.psam1);
 ```
 
-La app de [`example/`](example/) tiene un botón por cada función para probar en
-el terminal.
+The [`example/`](example/) app has one button per function to try on the terminal.
 
 ---
 
-## Notas de implementación
+## Internationalization (i18n)
 
-- **Impresión.** Usa la API de firmware `com.pos.device.printer.Printer` +
-  `PrintTask.setPrintBitmap(...)`. No usa el wrapper propietario `libprinter.jar`:
-  se envía un bitmap ya rasterizado, lo que mantiene el repo libre de binarios.
-- **Inicialización.** El SDK se inicializa una sola vez y de forma asíncrona; el
-  plugin bloquea internamente hasta que está listo. La init es **lazy** (en la
-  primera llamada real), de modo que el plugin es inocuo si se incluye en una app
-  multi‑flavor que también corre en hardware que no es Newpos.
-- **Hilos.** Las operaciones que esperan callbacks del SDK corren fuera del hilo
-  de UI.
+Supports the languages the reference consumer (DTEx) handles: **Spanish, English,
+Traditional Chinese and Portuguese.**
 
-## ⚠️ Banda magnética y PCI
+```dart
+// Terminal system language (BCP-47 tags; use the locale* constants)
+await Newpos.device.setLocale(NewposDevice.localeChineseTraditional); // 'zh-TW'
+final supported = await Newpos.device.supportedLocales();             // what the firmware ships
 
-`Newpos.magcard.readTracks()` devuelve el contenido de los tracks **en claro,
-incluido el PAN**. El plugin solo expone la lectura del hardware; es
-responsabilidad de la app que lo consume **no persistir ni registrar** esos datos
-y cumplir PCI‑DSS.
+// Human-readable status text in the given language (falls back to English).
+// The enum stays the source of truth; describe() is a convenience for apps
+// without their own l10n.
+final status = await Newpos.printer.status();
+print(status.describe(const Locale('en'))); // "Out of paper", "Overheated", ...
+```
 
-## Estado
+---
 
-- ✅ Impresión y datos de equipo — implementado.
-- 🧪 Scanner (single‑shot, sin preview), banda magnética y PSAM — implementados;
-  falta validación en terminal físico.
-- ⛔ Pagos EMV (venta con tarjeta) — fuera del alcance de este plugin.
+## Implementation notes
 
-## Compatibilidad
+- **Printing.** Uses the `com.pos.device.printer.Printer` firmware API +
+  `PrintTask.setPrintBitmap(...)`. It does not use the proprietary `libprinter.jar`
+  wrapper: an already-rasterized bitmap is sent, keeping the repo binary-free.
+- **Initialization.** The SDK is initialized once, asynchronously; the plugin
+  blocks internally until it is ready. Init is **lazy** (on the first real call),
+  so the plugin is harmless when included in a multi‑flavor app that also runs on
+  non-Newpos hardware.
+- **Threads.** Operations that wait on SDK callbacks run off the UI thread.
 
-- Newpos 9830 y equipos con firmware que provea `com.pos.device.*`.
-- Android (min SDK 24). No hay soporte iOS (el hardware es Android).
+## ⚠️ Magnetic stripe and PCI
 
-## Licencia
+`Newpos.magcard.readTracks()` returns the track contents **in the clear,
+including the PAN**. The plugin only exposes the hardware read; it is the
+consuming app's responsibility to **not persist or log** that data and to comply
+with PCI‑DSS.
 
-[MIT](LICENSE). El SDK `com.pos.device.*` es propiedad de Newpos y **no** está
-cubierto por esta licencia.
+## Status
+
+- ✅ Printing and device info — implemented.
+- 🧪 Scanner (single‑shot, no preview), magnetic stripe and PSAM — implemented;
+  pending validation on a physical terminal.
+- ⛔ EMV payments (card sale) — out of scope for this plugin.
+
+## Compatibility
+
+- Newpos 9830 and units whose firmware provides `com.pos.device.*`.
+- Android (min SDK 24). No iOS support (the hardware is Android).
+
+## License
+
+This plugin's code is released under [MIT](LICENSE).
+
+The vendor SDK (`sdk.jar`; `com.pos.device.*` and `com.secure.api.*` packages) is
+third-party proprietary software, **not** covered by this license and **not**
+distributed in this repository. Obtaining and using it requires a license and
+authorization from the manufacturer; see [`android/libs/README.md`](android/libs/README.md).
+The authors of this wrapper grant no rights over that SDK and **disclaim all
+liability** arising from its acquisition, licensing or use.

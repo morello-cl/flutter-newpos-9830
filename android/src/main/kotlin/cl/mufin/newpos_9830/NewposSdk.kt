@@ -23,34 +23,54 @@ object NewposSdk {
 
     @Volatile private var ready = false
     private var started = false
-    private val latch = CountDownLatch(1)
+    // Recreable: un intento de init fallido debe poder reintentarse en la próxima llamada.
+    @Volatile private var latch = CountDownLatch(1)
 
     /** Dispara el init una vez (thread-safe). No bloquea. */
     @Synchronized
     fun start(context: Context) {
-        if (started) return
+        if (started || ready) return
         started = true
-        SDKManager.init(context.applicationContext, object : SDKManagerCallback {
-            override fun onFinish() {
-                Log.d(TAG, "SDKManager init OK")
-                ready = true
-                latch.countDown()
-            }
-        })
+        latch = CountDownLatch(1)
+        try {
+            SDKManager.init(context.applicationContext, object : SDKManagerCallback {
+                override fun onFinish() {
+                    Log.d(TAG, "SDKManager init OK")
+                    ready = true
+                    latch.countDown()
+                }
+            })
+        } catch (e: Exception) {
+            // init lanzó sincrónicamente: no dejar el gate trabado para siempre.
+            Log.e(TAG, "SDKManager.init falló; se permitirá reintento", e)
+            started = false
+            latch.countDown()
+        }
     }
 
     /**
      * Garantiza que el SDK esté inicializado. Bloquea hasta [INIT_TIMEOUT_MS].
-     * @return true si el SDK quedó listo.
+     * @return true si el SDK quedó listo. Si el init no completó a tiempo, se
+     *         reinicia el gate para que una llamada posterior pueda reintentar.
      */
     fun ensureReady(context: Context): Boolean {
         if (ready) return true
         start(context)
-        return try {
-            latch.await(INIT_TIMEOUT_MS, TimeUnit.MILLISECONDS) && ready
+        val current = latch
+        val ok = try {
+            current.await(INIT_TIMEOUT_MS, TimeUnit.MILLISECONDS) && ready
         } catch (e: InterruptedException) {
             Log.e(TAG, "ensureReady interrumpido", e)
+            Thread.currentThread().interrupt()
             false
         }
+        if (!ok) resetForRetry()
+        return ok
+    }
+
+    /** Permite que la próxima llamada dispare el init de nuevo tras un fallo/timeout. */
+    @Synchronized
+    private fun resetForRetry() {
+        if (!ready) started = false
     }
 }

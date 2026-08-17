@@ -1,4 +1,4 @@
-# CLAUDE.md — newpos_9830
+# CLAUDE.md — flutter_newpos_android_sdk
 
 Guía para Claude Code / Codex al trabajar en este repositorio.
 
@@ -7,7 +7,8 @@ Guía para Claude Code / Codex al trabajar en este repositorio.
 Plugin **Flutter (Android)** que envuelve el SDK de plataforma del terminal POS
 **Newpos 9830** (`com.pos.device.*`, familia asmart/Newpos) y lo expone en Dart.
 Nace extraído de la app **DTEx** (facturación electrónica chilena), que lo consume
-por `path: ../newpos_9830`. Público, MIT: https://github.com/morello-cl/flutter-newpos-9830
+por `path` (clave de dependencia `flutter_newpos_android_sdk`). Público, MIT:
+https://github.com/morello-cl/flutter-newpos-android-sdk
 
 ## Idioma
 
@@ -32,7 +33,7 @@ neutro** — nunca argentinismos ("vos/decime/querés" → "tú/dime/quieres").
 
 ## Estructura
 
-- `lib/newpos_9830.dart` — fachada `Newpos.{printer,device,scanner,magcard,icc}` + exports.
+- `lib/flutter_newpos_android_sdk.dart` — fachada `Newpos.{printer,device,scanner,magcard,icc}` + exports.
 - `lib/src/` — API por dominio + `models.dart` (DeviceInfo, PrinterStatus, TrackData, IccSlot).
 - `android/src/main/kotlin/cl/mufin/newpos_9830/`:
   - `Newpos9830Plugin.kt` — canal `cl.mufin.newpos_9830/methods`, dispatch en hilo IO.

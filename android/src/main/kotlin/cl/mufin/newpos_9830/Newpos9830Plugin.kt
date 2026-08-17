@@ -21,7 +21,12 @@ class Newpos9830Plugin :
     private lateinit var context: Context
 
     // Los wrappers bloquean (esperan callbacks del SDK): despachar fuera del UI thread.
-    private val io = Executors.newSingleThreadExecutor()
+    // Pool (no single-thread): una operación larga (scan/readTracks 30s) NO debe
+    // bloquear a scanner.stop() / disconnect en la cola. Los managers del SDK son
+    // singletons con sincronización interna; el consumidor no debe lanzar dos
+    // lecturas del mismo módulo a la vez.
+    // ponytail: cachedThreadPool; pasar a un pool acotado si el volumen de llamadas crece.
+    private val io = Executors.newCachedThreadPool()
     private val main = Handler(Looper.getMainLooper())
 
     private val printer by lazy { NewposPrinter(context) }
@@ -59,6 +64,8 @@ class Newpos9830Plugin :
         "device.info" -> device.info()
         "device.modules" -> device.modules()
         "device.hasModule" -> device.hasModule(call.argument("name")!!)
+        "device.supportedLocales" -> device.supportedLocales()
+        "device.setLocale" -> device.setLocale(call.argument("tag")!!)
 
         "printer.printImage" -> {
             val bytes = call.argument<ByteArray>("png")!!

@@ -49,25 +49,26 @@ enum PrinterStatus {
   /// Mapea el int crudo del SDK (ver `Printer.PRINTER_*`).
   static PrinterStatus fromCode(int code) {
     switch (code) {
+      // Los códigos de falla del SDK son NEGATIVOS (Printer.PRINTER_STATUS_*).
       case 0:
         return PrinterStatus.ok; // PRINTER_OK
-      case 1:
+      case -1:
         return PrinterStatus.busy; // PRINTER_STATUS_BUSY
-      case 2:
+      case -2:
         return PrinterStatus.highTemp; // PRINTER_STATUS_HIGHT_TEMP
-      case 3:
+      case -3:
         return PrinterStatus.paperLack; // PRINTER_STATUS_PAPER_LACK
-      case 4:
+      case -4:
         return PrinterStatus.noBattery; // PRINTER_STATUS_NO_BATTERY
-      case 5:
+      case -5:
         return PrinterStatus.feed; // PRINTER_STATUS_FEED
-      case 6:
+      case -6:
         return PrinterStatus.printing; // PRINTER_STATUS_PRINT
-      case 7:
+      case -7:
         return PrinterStatus.forceFeed; // PRINTER_STATUS_FORCE_FEED
-      case 8:
+      case -8:
         return PrinterStatus.powerOn; // PRINTER_STATUS_POWER_ON
-      case 9:
+      case -9:
         return PrinterStatus.tasksFull; // PRINTER_TASKS_FULL
       default:
         return PrinterStatus.unknown;

@@ -11,40 +11,11 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
 > [«SDK del fabricante»](README.md#sdk-del-fabricante-requerido-para-compilar)
 > y [`android/libs/README.md`](android/libs/README.md).
 
-## [No liberado]
+## [1.0.0]
 
-### Cambiado
-
-- **BREAKING — rename del paquete y el repo.** Paquete Dart `newpos_9830` →
-  `flutter_newpos_android_sdk`; repo `flutter-newpos-9830` →
-  `flutter-newpos-android-sdk` (para separar la línea Android de los terminales
-  Linux de Newpos). Los consumidores actualizan el import a
-  `package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart` y la clave
-  de dependencia. El package Kotlin (`cl.mufin.newpos_9830`), el channel y la API
-  (`Newpos.*`) **no** cambian.
-
-- **build — el jar se toma de una ubicación local.** El gradle resuelve el
-  `sdk.jar` desde `libs/` (dev por `path:`) o `<app>/android/newpos-sdk/` (consumo
-  por git). El jar lo **entrega Newpos** y se solicita al fabricante; no se
-  versiona ni se distribuye por este repositorio. Disclaimer legal reforzado (uso
-  sujeto a contratos y autorización del fabricante; prohibido sin permisos).
-
-### Agregado
-
-- **i18n — textos de estado legibles.** `PrinterStatus.describe(Locale)` entrega
-  el estado en español, inglés, chino tradicional y portugués (cae a inglés si
-  el idioma no está). El `enum` sigue siendo la fuente de verdad; es una
-  cortesía para apps sin l10n propio.
-- **i18n — idioma del terminal.** `Newpos.device.setLocale(tag)` cambia el idioma
-  del sistema del terminal y `Newpos.device.supportedLocales()` lista los que el
-  firmware declara. Constantes `NewposDevice.locale*` para los 4 idiomas de DTEx.
-- **example — selector de idioma.** El demo agrega botones de idioma que llaman
-  `setLocale` y muestra el estado del printer traducido con `describe(locale)`.
-- **docs — README bilingüe.** `README.md` en inglés (primario, convención de
-  pub.dev) + `README.es.md` en español, con selector de idioma cruzado. Ambos
-  documentan la API i18n.
-
-## [0.0.2]
+Primera versión estable. Consolida todo el trabajo posterior al release inicial
+y **supersede el tag de pre-lanzamiento `v0.0.2`** (mismo contenido,
+re-versionado como 1.0.0).
 
 ### Corregido
 
@@ -63,6 +34,36 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
   bitmap mientras el SDK aún lo leía. Ahora se cancela la tarea colgada antes de
   reintentar.
 
+### Agregado
+
+- **i18n — textos de estado legibles.** `PrinterStatus.describe(Locale)` entrega
+  el estado en español, inglés, chino tradicional y portugués (cae a inglés si
+  el idioma no está). El `enum` sigue siendo la fuente de verdad; es una
+  cortesía para apps sin l10n propio.
+- **i18n — idioma del terminal.** `Newpos.device.setLocale(tag)` cambia el idioma
+  del sistema del terminal y `Newpos.device.supportedLocales()` lista los que el
+  firmware declara. Constantes `NewposDevice.locale*` para los 4 idiomas de DTEx.
+- **example — selector de idioma.** El demo agrega botones de idioma que llaman
+  `setLocale` y muestra el estado del printer traducido con `describe(locale)`.
+- **docs — README bilingüe.** `README.md` en inglés (primario, convención de
+  pub.dev) + `README.es.md` en español, con selector de idioma cruzado. Ambos
+  documentan la API i18n.
+
+### Cambiado
+
+- **BREAKING — rename del paquete y el repo.** Paquete Dart `newpos_9830` →
+  `flutter_newpos_android_sdk`; repo `flutter-newpos-9830` →
+  `flutter-newpos-android-sdk` (para separar la línea Android de los terminales
+  Linux de Newpos). Los consumidores actualizan el import a
+  `package:flutter_newpos_android_sdk/flutter_newpos_android_sdk.dart` y la clave
+  de dependencia. El package Kotlin (`cl.mufin.newpos_9830`), el channel y la API
+  (`Newpos.*`) **no** cambian.
+- **build — el jar se toma de una ubicación local.** El gradle resuelve el
+  `sdk.jar` desde `libs/` (dev por `path:`) o `<app>/android/newpos-sdk/` (consumo
+  por git). El jar lo **entrega Newpos** y se solicita al fabricante; no se
+  versiona ni se distribuye por este repositorio. Disclaimer legal reforzado (uso
+  sujeto a contratos y autorización del fabricante; prohibido sin permisos).
+
 ## [0.0.1]
 
 ### Agregado
@@ -74,6 +75,5 @@ y el versionado sigue [SemVer](https://semver.org/lang/es/).
   - Lectura de banda magnética, 3 tracks (`Newpos.magcard`).
   - Tarjeta de contacto / PSAM con selección de slot (`Newpos.icc`).
 
-[No liberado]: https://github.com/morello-cl/flutter-newpos-android-sdk/compare/v0.0.2...HEAD
-[0.0.2]: https://github.com/morello-cl/flutter-newpos-android-sdk/compare/v0.0.1...v0.0.2
+[1.0.0]: https://github.com/morello-cl/flutter-newpos-android-sdk/compare/v0.0.1...v1.0.0
 [0.0.1]: https://github.com/morello-cl/flutter-newpos-android-sdk/releases/tag/v0.0.1
